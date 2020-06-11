@@ -54,11 +54,12 @@ class PersistsDotNetDevUtility(Signature):
 
         if call["api"] == "RegSetValueExA" or call["api"] == "RegSetValueExW":
             buff = self.get_argument(call, "Buffer")
-            if buff.lower() and self.dname.lower() and self.dname.lower() in buff.lower():
-                self.data.append({"Copy": self.sname.lower() + " > " + self.dname.lower()})
-                fname = self.get_argument(call, "FullName")
-                if fname:
-                    self.data.append({"Regkey": fname})
+            if buff and self.dname:
+                if buff.lower() and self.dname.lower() and self.dname.lower() in buff.lower():
+                    self.data.append({"Copy": self.sname.lower() + " > " + self.dname.lower()})
+                    fname = self.get_argument(call, "FullName")
+                    if fname:
+                        self.data.append({"Regkey": fname})
 
     def on_complete(self):
         if len(self.data) > 0:
